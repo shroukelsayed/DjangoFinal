@@ -186,8 +186,7 @@ def listAllUsers(request):
     return HttpResponse(result)
 
 # Login Part  With Sessions  -->  Shrouk (functions : home,signin)
-
-def home(request):
+def signin(request):
     users = User.objects.all()
     try:
         for user in users:
@@ -201,8 +200,8 @@ def home(request):
                     #check if the user marked the remember me checkbox to set cookie ...
                     if request.POST.get('remember_me') == "checked":
                         request.session.set_test_cookie()
-                        if request.session.test_cookie_worked():
-                            print "cookie wokrs"
+                        # if request.session.test_cookie_worked():
+                        #     print "cookie wokrs"
                         #set user cookie to remember when logged in again ...
                         request.COOKIES['rememberMe'] = request.POST['remember_me']
                     return render(request, 'blog/home.html',{'User':user})
@@ -219,12 +218,12 @@ def home(request):
             return render(request, 'blog/signin.html')
     return render(request, 'blog/register.html')
 
-def signin(request):
-    #check if the user logged in redirect to home page
+def home(request):
+    #check if the user logged in redirect to home page with a session
     if "user_id" in request.session :
-        return  render(request, 'blog/home.html')
-    else:
-        return render(request,'blog/signin.html')
+        user_id = request.session["user_id"]
+        return  render(request, 'blog/home.html',{'user_id':user_id})
+    return render(request,'blog/home.html')
 
 def logout(request):
     #delete user session ...
@@ -234,31 +233,40 @@ def logout(request):
        request.session.delete_test_cookie()
     return render(request,'blog/signin.html')
 
-#Forget Password Part --> shrouk (functions : randomConfirm ,forgetPass ,confirm )
 
+#Forget Password Part --> shrouk (functions : randomConfirm ,forgetPass ,confirm )
 def randomConfirm(length=3):
     #create random number to send it within an email for user email to set his password ...
     return randint(100**(length-1), (100**(length)-1))
 
 def forgetPass(request):
     form = forgetPassForm(request.POST or None)
+   
     if form.is_valid():
-
         email = form.cleaned_data.get("email")
-        subject = " Hi ,Somebody recently asked to reset your Facebook password. "
-        global msg
-        msg = str(randomConfirm())
-        fromEmail = settings.EMAIL_HOST_USER
-        toEmail = [email]
+        userName = form.cleaned_data.get("username")
+        global forgetPass_user
+        users = User.objects.all()
         try:
-            send_mail(subject,msg,fromEmail,toEmail,fail_silently=False)
-        except BadHeaderError:
-            return HttpResponse('Invalid header found.')
-        return HttpResponseRedirect('/confirm/')
-    context = {
-        "form" : form,
-    }
-    return render(request,'blog/forgetPassword.html',context)
+            for user in users :
+                if user.username == userName :
+                    # print user.username
+                    # print userName
+                    forgetPass_user = userName
+                    subject = " Hi ,Somebody recently asked to reset your Facebook password. "
+                    global msg
+                    msg = str(randomConfirm())
+                    fromEmail = settings.EMAIL_HOST_USER
+                    toEmail = [email]
+                    try:
+                        send_mail(subject,msg,fromEmail,toEmail,fail_silently=False)
+                    except BadHeaderError:
+                        return HttpResponse('Invalid header found.')
+                    return HttpResponseRedirect('/confirm/',{'User':user})
+        except:
+            return render(request,'blog/forgetPassword.html',{'form':form })
+        return render(request,'blog/forgetPassword.html',{'form':form })
+    return render(request,'blog/forgetPassword.html',{'form':form })
 
 def confirm(request):
     form = confirmPassForm(request.POST or None)
@@ -267,11 +275,30 @@ def confirm(request):
         print code
         print msg
         if code == msg :
-            return render(request,'blog/home.html')
+            return HttpResponseRedirect('/reset/')
     context = {
         "form" : form,
     }
     return render(request,'blog/confirmMail.html',context)
+
+def resetPass(request):
+    form = resetPassForm(request.POST or None)
+    if form.is_valid():
+        password = form.cleaned_data.get("password")
+        passwordConf = form.cleaned_data.get("confirmPassword")
+        if password == passwordConf :
+            user = User.objects.get(username=forgetPass_user)
+            user.set_password(password)
+            user.save()
+            request.session["user_id"] = user.id
+            return render(request,'blog/home.html')
+       
+    context = {
+        "form" : form,
+    }
+    return render(request,'blog/resetPass.html',context) 
+
+
 
 
 def index(request) :

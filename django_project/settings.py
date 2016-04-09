@@ -48,6 +48,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog.apps.BlogConfig',
     #'debug_toolbar',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -62,6 +67,7 @@ MIDDLEWARE_CLASSES = [
 ]
 
 ROOT_URLCONF = 'django_project.urls'
+
 
 TEMPLATES = [
     {
@@ -142,3 +148,19 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+
+AUTHENTICATION_BACKENDS = (
+   
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+
+    'social.backends.facebook.FacebookOAuth2',  
+    
+)
+
+SITE_ID = 3
+LOGIN_REDIRECT_URL = "/home/"

@@ -19,12 +19,19 @@
     <link href="{%static "css/blog-post.css" %}"rel="stylesheet">
     <style type="text/css">
         #confirmMailForm{
-            margin-top: 100px;
-            margin-left: 200px;
+            margin-top:100px;
+            margin-left:200px;
         }
         #footer{
             margin-top:180px; 
-            margin-left: 30px;
+            margin-left:30px;
+        }
+        #confirm{
+            margin-top:20px; 
+            margin-left:100px;
+        }
+        #id_code{
+            margin-left:50px;   
         }
     </style>
 
@@ -71,10 +78,12 @@
 
             <!-- Blog Post Content Column -->
             <div class="col-md-6">
-            	<form method="post" action="/home/">
+            	<form method="post" action="">
 					{% csrf_token %}
 					{{ form.as_table }}
-					<input class="btn btn-action" type="submit" value=" Enter Code "></input>
+                    <div>
+					<input class="btn btn-action" id="confirm" type="submit" value=" Enter Code "></input>
+                    </div>
 				</form>
 				
 			</div>
