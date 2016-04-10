@@ -15,7 +15,7 @@ class Articles (models.Model):
     article_isApproved=models.BooleanField(default=True)
     user_id=models.ForeignKey(User,on_delete=models.CASCADE,default=1)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.article_title
 
 class Comments (models.Model):
@@ -27,7 +27,7 @@ class Comments (models.Model):
     parent_id=models.ForeignKey('self', on_delete=models.CASCADE, null=True)
     likes=models.ManyToManyField(User,related_name='likedBy')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.article_title
 
 class Tags (models.Model):
