@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'emoticons',
     'blog.apps.BlogConfig',
     #'debug_toolbar',
     'django.contrib.sites',
@@ -53,8 +54,6 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
-    'smileys',
-
 ]
 
 MIDDLEWARE_CLASSES = [
