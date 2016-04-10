@@ -17,6 +17,7 @@ from random import randint
 from django.core.mail import send_mail , BadHeaderError
 
 
+
 # Create your views here.
 def addArticaleForm(request):
     #adding article is depending on user's rolles --> Sarah

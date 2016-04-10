@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
+    'smileys',
+
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -99,7 +101,7 @@ DATABASES = {
         'NAME': 'blog',
         'USER': 'root',
         'PASSWORD': 'iti',
-        'HOST':'localhost'
+        'HOST':'localhost',
     }
 }
 
@@ -150,17 +152,15 @@ STATICFILES_DIRS = [
 ]
 
 
-AUTHENTICATION_BACKENDS = (
-   
-    # Needed to login by username in Django admin, regardless of `allauth`
-    'django.contrib.auth.backends.ModelBackend',
+# AUTHENTICATION_BACKENDS = (
+#     # Needed to login by username in Django admin, regardless of `allauth`
+#     'django.contrib.auth.backends.ModelBackend',
 
-    # `allauth` specific authentication methods, such as login by e-mail
-    'allauth.account.auth_backends.AuthenticationBackend',
+#     # `allauth` specific authentication methods, such as login by e-mail
+#     'allauth.account.auth_backends.AuthenticationBackend',
 
-    'social.backends.facebook.FacebookOAuth2',  
-    
-)
+#     'social.backends.facebook.FacebookOAuth2',     
+# )
 
 SITE_ID = 3
 # LOGIN_REDIRECT_URL = "/home/"

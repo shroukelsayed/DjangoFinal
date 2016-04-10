@@ -24,7 +24,7 @@ class Comments (models.Model):
     comment_isApproved=models.BooleanField(default=True)
     article_id=models.ForeignKey(Articles,on_delete=models.CASCADE,default=1)
     user_id=models.ForeignKey(User,on_delete=models.CASCADE,default=1,related_name='commentedBy')
-    parent_id=models.ForeignKey('self', on_delete=models.CASCADE, null=True)
+    parent_id=models.ForeignKey('self', on_delete=models.CASCADE,null=True)
     likes=models.ManyToManyField(User,related_name='likedBy')
 
     def __str__(self):

@@ -96,6 +96,17 @@ class ApprovedListFilter(admin.SimpleListFilter):
 
 class CommentsAdmin(admin.ModelAdmin):
     list_filter = (ApprovedListFilter,)
+    list_display = ['comment_content','comment_creationDate','comment_isApproved','user_id']
+    actions = ['make_approved']
+
+    def make_approved(self, request, queryset):
+        rows_updated = queryset.update(comment_isApproved=True)
+        if rows_updated == 1:
+            message_bit = "1 story was"
+        else:
+            message_bit = "%s stories were" % rows_updated
+        self.message_user(request, "%s successfully marked as approved." % message_bit)
+    make_approved.short_description = "Mark selected stories as approved"
 
 admin.site.register(Comments,CommentsAdmin)	
 admin.site.register(Tags)
