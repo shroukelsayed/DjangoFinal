@@ -3,7 +3,7 @@ from .views import *
 
 
 urlpatterns = [
-    url(r'^$',index),
+    # url(r'^$',index),
     url(r'^validate/$',validate),
     url(r'^register/$',register,name='register')
 

@@ -43,13 +43,19 @@ urlpatterns = [
     url(r'^like/(?P<comment_id>[0-9]+)/(?P<user_id>[0-9]+)$', like),
     url(r'^unlike/(?P<comment_id>[0-9]+)/(?P<user_id>[0-9]+)$', unlike),
 
-    url(r'^signin/$',signin),
-    url(r'home/$',home),
     #start home page from server index #Sarah
     url(r'^$',home),
+    url(r'^profile/(?P<username>[a-zA-Z0-9]+)$', UserProfile),
+
+
+    # urls of login part  --> shrouk
+    url(r'^signin/$',signin),
+    url(r'home/$',home),
     url(r'logout/$',logout),
     url(r'forgetPassword/$',forgetPass),
     url(r'confirm/$',confirm),
-    url(r'^profile/(?P<username>[a-zA-Z0-9]+)$', UserProfile),    
+    url(r'reset/$',resetPass),    
+    #api
+    url(r'^accounts/', include('allauth.urls')),
 
 ]

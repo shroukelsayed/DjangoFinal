@@ -1,4 +1,25 @@
 <h1> Home Page  </h1>
+{% if User.is_superuser %}
+	<a href="/admin/"> Control Panel</a>
+{% endif %}
+
+<h2>user name is : {{User.username}}</h2>
+
+
+	<h2>
+		{% if "user_id" in request.session %}
+			<a href="/logout/"> logout</a>
+			user_id in session = {{ request.session.user_id }}
+			
+		{% else %}
+			<a href="/signin/"> login</a>
+		{% endif %}
+
+	</h2>
+
+
+
+
 
 user name is : {{User.username}}
 
