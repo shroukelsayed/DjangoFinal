@@ -288,7 +288,7 @@ def resetPass(request):
         passwordConf = form.cleaned_data.get("confirmPassword")
         if password == passwordConf :
             user = User.objects.get(username=forgetPass_user)
-            user.set_password(password)
+            user.password=password
             user.save()
             request.session["user_id"] = user.id
             return render(request,'blog/home.html')
